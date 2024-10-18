@@ -23,8 +23,6 @@ export default function HomeScreen() {
   const [targetId, setTargetId] = useState('jesus1')
   const [messages, setMessages] = useState<MessageType[]>([])
 
-  const [socket, setSocket] = useState(undefined)
-
   // const [time, setTime] = useState('')
 
   // Estado para la hora del time picker
@@ -51,11 +49,7 @@ export default function HomeScreen() {
       console.log('Parsed message:', parsedMessage)
       setMessages((prevMessages) => [...prevMessages, parsedMessage])
     }
-
-    // ws.onclose = () => {
-    //   console.log('Conexión cerrada')
-    // }
-
+    
     // Limpiar el WebSocket al desmontar el componente
     return () => {
       console.log('Conexión cerrada')
@@ -66,6 +60,7 @@ export default function HomeScreen() {
   const sendMessage = (valor : string) => {
     if (ws && targetId) {
       // Enviar el mensaje junto con el ID destino
+      console.log('input value: ', inputValue)
       ws.send(
         JSON.stringify({
           id: userId,
@@ -86,9 +81,9 @@ export default function HomeScreen() {
     var numero 
     console.log("Switch está:", isOn ? "Encendido" : "Apagado");
     if (isOn) {
-      numero = '0'
+      numero = '25'
     } else {
-      numero = '180'
+      numero = '125'
     }
     sendMessage(numero)
   }
@@ -123,9 +118,9 @@ export default function HomeScreen() {
         <View>
           <TimePicker time={startTime} setTime={setStartTime} />
           <TimePicker time={finishTime} setTime={setFinishTime} />
-          {/* <TouchableOpacity onPress={sendMessage} style={styles.button}>
+          <TouchableOpacity onPress={() => sendMessage('10')} style={styles.button}>
             <ThemedText style={styles.buttonText}>Send</ThemedText>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       </ThemedView>
     </ParallaxScrollView>
