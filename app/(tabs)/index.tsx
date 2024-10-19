@@ -8,6 +8,7 @@ import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaView, TextInput, TouchableOpacity, View } from 'react-native';
 import TimePicker from '@/components/TimePicker';
 import SwitchButton from '@/components/SwitchButton';
+import SwitchComponent from '@/components/SwitchComponent';
 
 export default function HomeScreen() {
 
@@ -20,7 +21,7 @@ export default function HomeScreen() {
   const [userId, setUserId] = useState('yo')
 
   const [inputValue, setInputValue] = useState('')
-  const [targetId, setTargetId] = useState('jesus1')
+  const [targetId, setTargetId] = useState('jesus2')
   const [messages, setMessages] = useState<MessageType[]>([])
 
   // const [time, setTime] = useState('')
@@ -81,11 +82,15 @@ export default function HomeScreen() {
     var numero 
     console.log("Switch está:", isOn ? "Encendido" : "Apagado");
     if (isOn) {
-      numero = '25'
+      numero = '0'
     } else {
-      numero = '125'
+      numero = '180'
     }
     sendMessage(numero)
+  }
+
+  const imprimir = (data: boolean) => {
+    console.log('Valor: ', data)
   }
 
   return (
@@ -108,7 +113,9 @@ export default function HomeScreen() {
           <TextInput style={styles.input} value={targetId} onChangeText={(text) => setTargetId(text)} placeholder='ID del destinatario'/>
           <TextInput style={styles.input} value={inputValue} onChangeText={(text) => setInputValue(text)} placeholder='Mensaje'/>
           {/* Switch button */}
-          <SwitchButton onToggle={handleToggle} />
+          <ThemedView style={styles.switchButton}>
+            <SwitchButton onToggle={handleToggle} />
+          </ThemedView>
         </SafeAreaView>
         <View>
           {messages.map((message, index) => (
@@ -123,6 +130,9 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </ThemedView>
+      <ThemedView>
+        <SwitchComponent sendDataToParend={handleToggle} />
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
@@ -131,38 +141,44 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginBottom: 16,
   },
   stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   reactLogo: {
     height: 178,
     width: 290,
+    position: 'absolute',
     bottom: 0,
     left: 0,
-    position: 'absolute',
   },
   input: {
     marginTop: 16,
-    height: 40,
-    borderColor: '#444',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    color: '#ffffff',
-    backgroundColor: '#333',
+    height: 50, // Altura del input
+    borderColor: '#ccc', // Color del borde en modo claro
+    borderWidth: 1, // Borde más delgado
+    borderRadius: 30, // Bordes redondeados
+    paddingHorizontal: 15,
+    color: '#333', // Texto en color oscuro para mejor legibilidad
+    backgroundColor: '#fff', // Fondo blanco
+    fontSize: 16, // Tamaño de fuente
   },
   button: {
     marginTop: 22,
     alignItems: 'center',
-    backgroundColor: '#444',
-    padding: 10,
-    borderRadius: 8,
+    backgroundColor: '#4CA64C', // Color del botón primario
+    paddingVertical: 15, // Espacio vertical
+    paddingHorizontal: 20, // Espacio horizontal
+    borderRadius: 30, // Bordes redondeados
+    elevation: 3, // Sombra para dar profundidad
   },
   buttonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 18, // Tamaño de texto más grande
+    fontWeight: 'bold', // Texto en negrita
   },
+  switchButton: {
+    // top: 18
+  }
 });

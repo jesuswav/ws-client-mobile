@@ -11,8 +11,14 @@ import ContentCard from '@/components/ContendCard';
 import SliderComponent from '@/components/SliderComponent';
 import SwitchComponent from '@/components/SwitchComponent';
 import SearchBar from '@/components/SearchBar';
+import Button from '@/components/Button';
 
 export default function TabTwoScreen() {
+
+  const handleButtonPress = () => {
+    console.log('Boton presionado.')
+  }
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -34,12 +40,20 @@ export default function TabTwoScreen() {
       </ThemedView>
       {/* Switch component */}
       <ThemedView>
-        <SwitchComponent />
+        {/* <SwitchComponent /> */}
       </ThemedView>
       {/* Search bar */}
       <ThemedView>
         <SearchBar />
       </ThemedView>
+      {/* Diferentes tipos de botones */}
+      <SafeAreaView style={styles.buttonContainer}>
+      <Button title="Botón Primario" onPress={handleButtonPress} />
+      <Button title="Botón Secundario" onPress={handleButtonPress} type="secondary" />
+      <Button title="Botón de Alerta" onPress={handleButtonPress} type="alert" />
+      <Button title="Botón Deshabilitado" onPress={() => {}} type="disabled" />
+      <Button title="Botón de Éxito" onPress={handleButtonPress} type="success" />
+    </SafeAreaView>
     </ParallaxScrollView>
   );
 }
@@ -59,5 +73,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f9fafb',
     padding: 20,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f9fafb',
   },
 });

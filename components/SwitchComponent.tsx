@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { View, Switch, StyleSheet, Text } from 'react-native';
 
-const SwitchComponent = () => {
+interface SwitchComponentProps {
+  sendDataToParend: (data: boolean) => void
+}
+
+const SwitchComponent: React.FC<SwitchComponentProps> = ({sendDataToParend}) => {
   const [isEnabled, setIsEnabled] = useState(false);
 
-  const toggleSwitch = () => setIsEnabled((prev) => !prev);
+  const toggleSwitch = () => {
+    setIsEnabled((prev) => !prev)
+    sendDataToParend(isEnabled)
+  }
 
   return (
     <View style={styles.container}>
