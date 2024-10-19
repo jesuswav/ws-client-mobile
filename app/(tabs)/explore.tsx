@@ -49,7 +49,7 @@ export default function TabTwoScreen() {
       </ThemedView>
       {/* Switch component */}
       <ThemedView>
-        <SwitchComponent sendDataToParend={imprimir} />
+        <SwitchComponent sendDataToParend={imprimir} onOff={false} />
       </ThemedView>
       {/* Search bar */}
       <ThemedView>

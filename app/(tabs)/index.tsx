@@ -27,8 +27,19 @@ export default function HomeScreen() {
   // const [time, setTime] = useState('')
 
   // Estado para la hora del time picker
-  const [startTime, setStartTime] = useState(new Date());
-  const [finishTime, setFinishTime] = useState(new Date());
+  const [startTime, setStartTime] = useState(() => {
+    const currentTime = new Date();
+    currentTime.setHours(8); // Establece la hora (08:00 AM)
+    currentTime.setMinutes(30); // Establece los minutos
+    return currentTime;
+  });
+
+  const [finishTime, setFinishTime] = useState(() => {
+    const currentTime = new Date();
+    currentTime.setHours(12); // Establece la hora (05:00 PM)
+    currentTime.setMinutes(0); // Establece los minutos
+    return currentTime;
+  });
 
   // Conectar al servidor WebSocket
   const ws = new WebSocket('ws://192.168.0.108:3001')
@@ -56,7 +67,7 @@ export default function HomeScreen() {
       console.log('Conexión cerrada')
       ws.close()
     }
-  }, [userId])
+  }, [userId, messages])
 
   const sendMessage = (valor : string) => {
     if (ws && targetId) {
@@ -74,6 +85,21 @@ export default function HomeScreen() {
         })
       )
       setInputValue('')
+    }
+  }
+
+  // estado para el switch component
+  const [isOnOff, setIsOnOff] = useState(false)
+  ws.onmessage = (event) => {
+    const message = event.data
+    const parsedMessage = JSON.parse(message)
+    console.log('Parsed message:', parsedMessage)
+    setMessages((prevMessages) => [...prevMessages, parsedMessage])
+    console.log(parsedMessage.message)
+    if (parsedMessage.message === '0') {
+      setIsOnOff(false)
+    } else {
+      setIsOnOff(true)
     }
   }
 
@@ -95,10 +121,10 @@ export default function HomeScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#A1CEDC', dark: '#A4DE9F' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={require('@/assets/images/branch-with-leafs-plant-free-png.webp')}
           style={styles.reactLogo}
         />
       }>
@@ -123,15 +149,17 @@ export default function HomeScreen() {
           ))}
         </View>
         <View>
-          <TimePicker time={startTime} setTime={setStartTime} />
-          <TimePicker time={finishTime} setTime={setFinishTime} />
-          <TouchableOpacity onPress={() => sendMessage('10')} style={styles.button}>
+          <ThemedView style={styles.timePickerContainer}>
+            <TimePicker time={startTime} setTime={setStartTime} title='Inicio' color='rgba(164, 222, 159, 0.71)' />
+            <TimePicker time={finishTime} setTime={setFinishTime} title='Final' color='rgba(110, 192, 132, 0.56)' /> 
+          </ThemedView>
+          <TouchableOpacity onPress={() => sendMessage('180')} style={styles.button}>
             <ThemedText style={styles.buttonText}>Send</ThemedText>
           </TouchableOpacity>
         </View>
       </ThemedView>
       <ThemedView>
-        <SwitchComponent sendDataToParend={handleToggle} />
+        <SwitchComponent sendDataToParend={handleToggle} onOff={isOnOff} />
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -147,11 +175,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   reactLogo: {
-    height: 178,
-    width: 290,
+    height: 400,
+    width: 240,
     position: 'absolute',
+    top: -8,
     bottom: 0,
     left: 0,
+    transform: [{ rotate: '70deg' }],
   },
   input: {
     marginTop: 16,
@@ -180,5 +210,12 @@ const styles = StyleSheet.create({
   },
   switchButton: {
     // top: 18
+  },
+  timePickerContainer: {
+    top: 12,
+    marginBottom: 30,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 12
   }
 });
