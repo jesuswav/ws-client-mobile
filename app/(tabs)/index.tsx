@@ -121,16 +121,16 @@ export default function HomeScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#A4DE9F' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/branch-with-leafs-plant-free-png.webp')}
-          style={styles.reactLogo}
-        />
-      }>
+      headerBackgroundColor={{ light: '#88D498', dark: '#88D498' }}
+      headerComponent={(
+        <View style={styles.headerComponent}>
+          <ThemedText style={styles.headerText}>Agua total gastada</ThemedText>
+          <ThemedText style={styles.headerNumber}>421,567lts</ThemedText>
+        </View>
+      )}
+      >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Web sockets connection test!</ThemedText>
-        <HelloWave/>
+        <ThemedText type="title">Mis Huertos</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText>Write your message!</ThemedText>
@@ -166,10 +166,28 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  headerComponent: {
+    height: 280, 
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginLeft: 32,
+  },
+  headerText: {
+    bottom: -52,
+    color: '#ffffff' 
+  },
+  headerNumber: {
+    lineHeight: 52,
+    fontSize: 40,
+    bottom: -48,
+    fontWeight: '700',
+    color: '#ffffff'
+  }, 
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    color: '#575757'
   },
   stepContainer: {
     marginBottom: 16,
