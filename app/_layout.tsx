@@ -32,6 +32,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="details" options={{ headerShown: false }} />
+        <Stack.Screen name="gardenPage" options={{ headerShown: false }} />
         <Stack.Screen name="scheduleForm" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>

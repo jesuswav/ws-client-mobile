@@ -8,6 +8,7 @@ import { SafeAreaView, TextInput, TouchableOpacity, View } from 'react-native';
 import TimePicker from '@/components/TimePicker';
 import SwitchButton from '@/components/SwitchButton';
 import SwitchComponent from '@/components/SwitchComponent';
+import GardenItem from '@/components/appComponents/GardenItem';
 
 export default function HomeScreen() {
 
@@ -129,15 +130,15 @@ export default function HomeScreen() {
       )}
       >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Mis Huertos</ThemedText>
+        <ThemedText style={{color: '#575757'}} type="title">Mis Huertos</ThemedText>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
+      {/* <ThemedView style={styles.stepContainer}>
         <ThemedText>Write your message!</ThemedText>
         <SafeAreaView>
           <TextInput style={styles.input} value={userId} onChangeText={(text) => setUserId(text)} placeholder='Tu id'/>
           <TextInput style={styles.input} value={targetId} onChangeText={(text) => setTargetId(text)} placeholder='ID del destinatario'/>
           <TextInput style={styles.input} value={inputValue} onChangeText={(text) => setInputValue(text)} placeholder='Mensaje'/>
-          {/* Switch button */}
+
           <ThemedView style={styles.switchButton}>
             <SwitchButton onToggle={handleToggle} />
           </ThemedView>
@@ -156,9 +157,13 @@ export default function HomeScreen() {
             <ThemedText style={styles.buttonText}>Send</ThemedText>
           </TouchableOpacity>
         </View>
-      </ThemedView>
+      </ThemedView> */}
       <ThemedView>
         <SwitchComponent sendDataToParend={handleToggle} onOff={isOnOff} />
+      </ThemedView>
+      {/* Items de los huertos */}
+      <ThemedView>
+        <GardenItem gardenName='Huerto Uno'/>
       </ThemedView>
     </ParallaxScrollView>
   );
