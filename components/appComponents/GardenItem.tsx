@@ -8,30 +8,24 @@ interface ItemProps {
 }
 
 interface gardenItemProps {
-  gardenName: string
+  gardenName: string,
+  background: string
 }
 
-const data: ItemProps[] = [
-  { id: '1', title: 'Huerto 1' },
-  { id: '2', title: 'Huerto 2' },
-  { id: '3', title: 'Huerto 3' },
-  { id: '4', title: 'Huerto 4' },
-]
-
-const GardenItem: React.FC<gardenItemProps> = ({ gardenName }) => {
+const GardenItem: React.FC<gardenItemProps> = ({ gardenName, background }) => {
   const router = useRouter()
 
   const handlePress = () => {
     // Navega a la pantalla de detalles pasando el arreglo completo en JSON
     router.push({
       pathname: '/gardenPage',
-      params: { itemId: 'hola', itemTitle: 'Huerto Uno' },
+      params: { itemId: 'hola', itemTitle: gardenName , spentWater: 123005},
     })
   }
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <View style={styles.item}>
+      <View style={[styles.item, {backgroundColor: `${background}`}]}>
         <View style={styles.itemPicture}></View>
         <Text style={styles.title}>{gardenName}</Text>
       </View>
@@ -46,8 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     gap: 18,
     alignItems: 'center',
-    backgroundColor: '#28a745', // Verde principal
-    paddingVertical: 16,
+    paddingVertical: 22,
     paddingHorizontal: 28,
     borderRadius: 18,
   },

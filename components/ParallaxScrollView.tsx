@@ -71,8 +71,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 32,
-    gap: 16,
+    paddingVertical: 32,
+    paddingHorizontal: 18,
+    gap: 12,
     overflow: 'hidden',
   },
 });

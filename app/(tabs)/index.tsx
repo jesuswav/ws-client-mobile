@@ -1,22 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet } from 'react-native'
 
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { SafeAreaView, TextInput, TouchableOpacity, View } from 'react-native';
-import TimePicker from '@/components/TimePicker';
-import SwitchButton from '@/components/SwitchButton';
-import SwitchComponent from '@/components/SwitchComponent';
-import GardenItem from '@/components/appComponents/GardenItem';
+import ParallaxScrollView from '@/components/ParallaxScrollView'
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
+import { SafeAreaView, TextInput, TouchableOpacity, View } from 'react-native'
+import SwitchComponent from '@/components/appComponents/SwitchComponent'
+import GardenItem from '@/components/appComponents/GardenItem'
 
 export default function HomeScreen() {
-
   type MessageType = {
-    id: number;
-    message: string;
-    startTime: string;
-  };
+    id: number
+    message: string
+    startTime: string
+  }
 
   const [userId, setUserId] = useState('yo')
 
@@ -28,18 +25,18 @@ export default function HomeScreen() {
 
   // Estado para la hora del time picker
   const [startTime, setStartTime] = useState(() => {
-    const currentTime = new Date();
-    currentTime.setHours(8); // Establece la hora (08:00 AM)
-    currentTime.setMinutes(30); // Establece los minutos
-    return currentTime;
-  });
+    const currentTime = new Date()
+    currentTime.setHours(8) // Establece la hora (08:00 AM)
+    currentTime.setMinutes(30) // Establece los minutos
+    return currentTime
+  })
 
   const [finishTime, setFinishTime] = useState(() => {
-    const currentTime = new Date();
-    currentTime.setHours(12); // Establece la hora (05:00 PM)
-    currentTime.setMinutes(0); // Establece los minutos
-    return currentTime;
-  });
+    const currentTime = new Date()
+    currentTime.setHours(12) // Establece la hora (05:00 PM)
+    currentTime.setMinutes(0) // Establece los minutos
+    return currentTime
+  })
 
   // Conectar al servidor WebSocket
   const ws = new WebSocket('ws://192.168.0.108:3001')
@@ -61,7 +58,7 @@ export default function HomeScreen() {
       console.log('Parsed message:', parsedMessage)
       setMessages((prevMessages) => [...prevMessages, parsedMessage])
     }
-    
+
     // Limpiar el WebSocket al desmontar el componente
     return () => {
       console.log('Conexión cerrada')
@@ -69,7 +66,7 @@ export default function HomeScreen() {
     }
   }, [userId, messages])
 
-  const sendMessage = (valor : string) => {
+  const sendMessage = (valor: string) => {
     if (ws && targetId) {
       // Enviar el mensaje junto con el ID destino
       console.log('input value: ', inputValue)
@@ -78,10 +75,18 @@ export default function HomeScreen() {
           id: userId,
           to: targetId,
           message: valor,
-          startHour: startTime.toLocaleTimeString([], { hour: '2-digit', hour12: false }),
+          startHour: startTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            hour12: false,
+          }),
           startMinute: startTime.toLocaleTimeString([], { minute: '2-digit' }),
-          finishHour: finishTime.toLocaleTimeString([], { hour: '2-digit', hour12: false }),
-          finishMinute: finishTime.toLocaleTimeString([], { minute: '2-digit' })
+          finishHour: finishTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            hour12: false,
+          }),
+          finishMinute: finishTime.toLocaleTimeString([], {
+            minute: '2-digit',
+          }),
         })
       )
       setInputValue('')
@@ -105,8 +110,8 @@ export default function HomeScreen() {
 
   const handleToggle = (isOn: boolean) => {
     console.log()
-    var numero 
-    console.log("Switch está:", isOn ? "Encendido" : "Apagado");
+    var numero
+    console.log('Switch está:', isOn ? 'Encendido' : 'Apagado')
     if (isOn) {
       numero = '0'
     } else {
@@ -115,22 +120,20 @@ export default function HomeScreen() {
     sendMessage(numero)
   }
 
-  const imprimir = (data: boolean) => {
-    console.log('Valor: ', data)
-  }
-
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#88D498', dark: '#88D498' }}
-      headerComponent={(
+      headerComponent={
         <View style={styles.headerComponent}>
           <ThemedText style={styles.headerText}>Agua total gastada</ThemedText>
           <ThemedText style={styles.headerNumber}>421,567lts</ThemedText>
         </View>
-      )}
-      >
+      }
+    >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText style={{color: '#575757'}} type="title">Mis Huertos</ThemedText>
+        <ThemedText style={{ color: '#575757' }} type='title'>
+          Mis Huertos
+        </ThemedText>
       </ThemedView>
       {/* <ThemedView style={styles.stepContainer}>
         <ThemedText>Write your message!</ThemedText>
@@ -158,40 +161,40 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </ThemedView> */}
-      <ThemedView>
-        <SwitchComponent sendDataToParend={handleToggle} onOff={isOnOff} />
-      </ThemedView>
+
       {/* Items de los huertos */}
-      <ThemedView>
-        <GardenItem gardenName='Huerto Uno'/>
+      <ThemedView style={{ gap: 16 }}>
+        <GardenItem gardenName='Huerto Uno' background='#88D498' />
+        <GardenItem gardenName='Huerto Dos' background='#A4DE9F' />
+        <GardenItem gardenName='Huerto Tres' background='#A4DE9F' />
       </ThemedView>
     </ParallaxScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   headerComponent: {
-    height: 210, 
+    height: 210,
     justifyContent: 'center',
     alignItems: 'flex-start',
     marginLeft: 32,
   },
   headerText: {
     bottom: -52,
-    color: '#ffffff' 
+    color: '#ffffff',
   },
   headerNumber: {
     lineHeight: 52,
     fontSize: 40,
     bottom: -48,
     fontWeight: '700',
-    color: '#ffffff'
-  }, 
+    color: '#ffffff',
+  },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    color: '#575757'
+    color: '#575757',
   },
   stepContainer: {
     marginBottom: 16,
@@ -238,6 +241,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     display: 'flex',
     flexDirection: 'row',
-    gap: 12
-  }
-});
+    gap: 12,
+  },
+})

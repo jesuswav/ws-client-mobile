@@ -16,7 +16,7 @@ const SwitchComponent: React.FC<SwitchComponentProps> = ({sendDataToParend, onOf
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{isEnabled ? 'Encendido' : 'Apagado'}</Text>
+      {/* <Text style={styles.label}>{isEnabled ? 'Encendido' : 'Apagado'}</Text> */}
       <Switch
         trackColor={{ false: '#ccc', true: '#A4DE97' }}
         thumbColor={isEnabled ? '#4CA64C' : '#f4f3f4'}
