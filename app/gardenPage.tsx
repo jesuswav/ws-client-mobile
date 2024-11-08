@@ -8,8 +8,17 @@ import { ThemedView } from '@/components/ThemedView'
 import SwitchComponent from '@/components/appComponents/SwitchComponent'
 import TimePicker from '@/components/appComponents/TimePicker'
 
-const GardenPage: React.FC = () => {
-  const { itemId, itemTitle, spentWater } = useLocalSearchParams() // Obtiene los parámetros pasados
+interface gardenPageProps {
+  gardenId: string
+  targedGardenId: string
+  valveId: string
+}
+
+const GardenPage: React.FC<gardenPageProps> = ({
+  gardenId,
+  targedGardenId,
+}) => {
+  const { itemId, itemTitle, spentWater, valveId } = useLocalSearchParams() // Obtiene los parámetros pasados
 
   const router = useRouter()
   const handlePress = () => {
@@ -34,7 +43,7 @@ const GardenPage: React.FC = () => {
   const [userId, setUserId] = useState('yo')
 
   const [inputValue, setInputValue] = useState('')
-  const [targetId, setTargetId] = useState('jesus2')
+  const [targetId, setTargetId] = useState('jesus3')
   const [messages, setMessages] = useState<MessageType[]>([])
 
   // const [time, setTime] = useState('')
@@ -55,7 +64,7 @@ const GardenPage: React.FC = () => {
   })
 
   // Conectar al servidor WebSocket
-  const ws = new WebSocket('ws://192.168.0.108:3001')
+  const ws = new WebSocket('ws://172.20.10.11:3001')
 
   // Guardar la conexión WebSocket en el estado
   // setSocket(ws)
@@ -91,6 +100,7 @@ const GardenPage: React.FC = () => {
           id: userId,
           to: targetId,
           message: valor,
+          valveId: valveId,
           startHour: startTime.toLocaleTimeString([], {
             hour: '2-digit',
             hour12: false,
@@ -274,7 +284,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     display: 'flex',
     flexDirection: 'row',
-    gap: 12
+    gap: 12,
   },
   button: {
     marginTop: 22,

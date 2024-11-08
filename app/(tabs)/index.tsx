@@ -4,11 +4,20 @@ import { StyleSheet } from 'react-native'
 import ParallaxScrollView from '@/components/ParallaxScrollView'
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
-import { SafeAreaView, TextInput, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, TextInput, TouchableOpacity, View, Modal, TouchableWithoutFeedback } from 'react-native'
 import SwitchComponent from '@/components/appComponents/SwitchComponent'
 import GardenItem from '@/components/appComponents/GardenItem'
+import NewGarden from '@/components/appComponents/NewGarden'
+import FormModal from '@/components/appComponents/FormModal'
 
 export default function HomeScreen() {
+  // simulación de datos desde la api
+  const [gardens, setGarden] = useState([
+    { gardenName: 'Huerto Uno', color: '#88D498', valveId: 'valve1' },
+    { gardenName: 'Huerto Dos', color: '#A4DE9F', valveId: 'valve2' },
+    { gardenName: 'Huerto Dos', color: '#A4DE9F', valveId: 'valve3' },
+  ])
+
   type MessageType = {
     id: number
     message: string
@@ -120,6 +129,26 @@ export default function HomeScreen() {
     sendMessage(numero)
   }
 
+  const handlePress = () => {
+    console.log('Botón presionado')
+  }
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  // Función para manejar el envío del formulario
+  const handleFormSubmit = (formData: { name: string; email: string }) => {
+    console.log('Formulario enviado', `Nombre: ${formData.name}, Email: ${formData.email}`);
+    // Aquí puedes manejar los datos del formulario como guardarlos o enviarlos a una API
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#88D498', dark: '#88D498' }}
@@ -134,45 +163,48 @@ export default function HomeScreen() {
         <ThemedText style={{ color: '#575757' }} type='title'>
           Mis Huertos
         </ThemedText>
+        <View>
+          <NewGarden title='New garden' onPress={handleOpenModal} />
+        </View>
       </ThemedView>
-      {/* <ThemedView style={styles.stepContainer}>
-        <ThemedText>Write your message!</ThemedText>
-        <SafeAreaView>
-          <TextInput style={styles.input} value={userId} onChangeText={(text) => setUserId(text)} placeholder='Tu id'/>
-          <TextInput style={styles.input} value={targetId} onChangeText={(text) => setTargetId(text)} placeholder='ID del destinatario'/>
-          <TextInput style={styles.input} value={inputValue} onChangeText={(text) => setInputValue(text)} placeholder='Mensaje'/>
-
-          <ThemedView style={styles.switchButton}>
-            <SwitchButton onToggle={handleToggle} />
-          </ThemedView>
-        </SafeAreaView>
-        <View>
-          {messages.map((message, index) => (
-            <ThemedText key={index}>{message.message}</ThemedText>
-          ))}
-        </View>
-        <View>
-          <ThemedView style={styles.timePickerContainer}>
-            <TimePicker time={startTime} setTime={setStartTime} title='Inicio' color='rgba(164, 222, 159, 0.71)' />
-            <TimePicker time={finishTime} setTime={setFinishTime} title='Final' color='rgba(110, 192, 132, 0.56)' /> 
-          </ThemedView>
-          <TouchableOpacity onPress={() => sendMessage('180')} style={styles.button}>
-            <ThemedText style={styles.buttonText}>Send</ThemedText>
-          </TouchableOpacity>
-        </View>
-      </ThemedView> */}
 
       {/* Items de los huertos */}
       <ThemedView style={{ gap: 16 }}>
-        <GardenItem gardenName='Huerto Uno' background='#88D498' />
-        <GardenItem gardenName='Huerto Dos' background='#A4DE9F' />
-        <GardenItem gardenName='Huerto Tres' background='#A4DE9F' />
+        {gardens.map((item, index) => (
+          <GardenItem
+            key={index}
+            gardenName={item.gardenName}
+            background={item.color}
+            valveId={item.valveId}
+          />
+        ))}
       </ThemedView>
+
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseModal}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback>
+              <FormModal onClose={handleCloseModal} onSubmit={handleFormSubmit} />
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </ParallaxScrollView>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerComponent: {
     height: 210,
     justifyContent: 'center',
@@ -193,6 +225,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
     color: '#575757',
   },
@@ -242,5 +275,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     gap: 12,
+  },
+  // modal styles
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
 })

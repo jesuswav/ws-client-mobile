@@ -9,17 +9,18 @@ interface ItemProps {
 
 interface gardenItemProps {
   gardenName: string,
-  background: string
+  background: string,
+  valveId: string
 }
 
-const GardenItem: React.FC<gardenItemProps> = ({ gardenName, background }) => {
+const GardenItem: React.FC<gardenItemProps> = ({ gardenName, background, valveId }) => {
   const router = useRouter()
 
   const handlePress = () => {
     // Navega a la pantalla de detalles pasando el arreglo completo en JSON
     router.push({
       pathname: '/gardenPage',
-      params: { itemId: 'hola', itemTitle: gardenName , spentWater: 123005},
+      params: { itemId: 'hola', itemTitle: gardenName , spentWater: 123005, valveId: valveId},
     })
   }
 
